@@ -86,6 +86,10 @@ const GeoChart = ({ data, selection, onClick }) => {
         ? `Deaths`
         : selection === "totalCases"
         ? `Total Cases`
+        : selection === "inICU"
+        ? "In ICU"
+        : selection === "hospitalized"
+        ? "Hospitalized"
         : null;
 
     const toolTipStyle = {
