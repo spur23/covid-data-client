@@ -1,0 +1,27 @@
+body {
+  background: #f5f6fa;
+}
+
+.list-item {
+  opacity: 1;
+  text-decoration: none;
+  list-style: none;
+}
+
+li {
+  list-style: none;
+}
+
+.app-container {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.router-container {
+  text-align: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}

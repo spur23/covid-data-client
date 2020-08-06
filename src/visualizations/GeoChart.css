@@ -1,0 +1,22 @@
+svg .state:hover {
+  stroke: black;
+  stroke-width: 2px;
+  cursor: pointer;
+}
+
+svg .state {
+  stroke: black;
+}
+
+svg {
+  align-self: center;
+  width: auto;
+}
+
+.tool-tip {
+  position: absolute;
+  margin-bottom: 1rem;
+  border: 1px solid black;
+  background-color: #dfe6e9;
+  width: 8vw;
+}
