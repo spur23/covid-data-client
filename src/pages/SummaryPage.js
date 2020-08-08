@@ -48,12 +48,41 @@ const SummaryPage = ({ navigate }) => {
     </h6>
   );
 
+  const renderUSData = !currentUSData ? null : (
+    <>
+      <div>
+        Active Cases:{" "}
+        {functions.numberWithCommas(
+          currentUSData[0].positive - currentUSData[0].recovered
+        )}
+      </div>
+      <div>
+        Recoveries: {functions.numberWithCommas(currentUSData[0].recovered)}
+      </div>
+      <div>Deaths: {functions.numberWithCommas(currentUSData[0].death)}</div>
+      <div>
+        In ICU: {functions.numberWithCommas(currentUSData[0].inIcuCurrently)}
+      </div>
+      <div>
+        Hospitalized:{" "}
+        {functions.numberWithCommas(currentUSData[0].hospitalizedCurrently)}
+      </div>
+      <div>
+        Total Cases: {functions.numberWithCommas(currentUSData[0].positive)}
+      </div>
+    </>
+  );
+
   return (
     <div className="summary-page-container">
       {!topFiveTableData || !mapData ? (
         <Loader />
       ) : (
         <>
+          <div className="us-data-container">
+            <h4>US Data</h4>
+            <div className="us-data">{renderUSData}</div>
+          </div>
           <div className="summary-main-container">
             <div className="map-container">
               <div className="button-container">

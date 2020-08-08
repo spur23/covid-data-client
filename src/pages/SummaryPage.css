@@ -1,4 +1,5 @@
 .summary-page-container,
+.us-data-container,
 .map-container {
   display: flex;
   flex-direction: column;
@@ -9,6 +10,10 @@
   text-shadow: 0 1px 0 #fff;
 }
 
+.us-data-container {
+  margin: 0;
+  margin-bottom: 1rem;
+}
 .summary-main-container {
   display: flex;
   align-content: center;
@@ -38,7 +43,8 @@ table {
   width: 50vw;
 }
 
-.button-container {
+.button-container,
+.us-data {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
