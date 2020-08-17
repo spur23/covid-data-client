@@ -53,7 +53,9 @@ const SummaryPage = ({ navigate }) => {
       <div>
         Active Cases:{" "}
         {functions.numberWithCommas(
-          currentUSData[0].positive - currentUSData[0].recovered
+          currentUSData[0].positive -
+            currentUSData[0].recovered -
+            currentUSData[0].death
         )}
       </div>
       <div>

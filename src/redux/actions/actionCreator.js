@@ -15,8 +15,8 @@ export const setLoading = () => {
 
 export const fetchCurrentData = () => async (dispatch) => {
   const [stateCurrent, usCurrent] = await Promise.all([
-    axios.get("https://covidtracking.com/api/v1/states/current.json"),
-    axios.get("https://covidtracking.com/api/v1/us/current.json"),
+    axios.get("https://api.covidtracking.com/api/v1/states/current.json"),
+    axios.get("https://api.covidtracking.com/v1/us/current.json"),
   ]);
 
   const payloadArray = [
@@ -32,9 +32,9 @@ export const fetchHistoricalData = (state) => async (dispatch) => {
 
   const response =
     state === "United States"
-      ? await axios.get(`https://covidtracking.com/api/v1/us/daily.json`)
+      ? await axios.get(`https://api.covidtracking.com/api/v1/us/daily.json`)
       : await axios.get(
-          `https://covidtracking.com/api/v1/states/${stateLowerCase}/daily.json`
+          `https://api.covidtracking.com/api/v1/states/${stateLowerCase}/daily.json`
         );
 
   dispatch({ type: FETCH_HISTORICAL_DATA, payload: response.data });
@@ -141,5 +141,6 @@ export const setMainTable = (currentUSData, currentStateData, stateKey) => {
     .filter((el) => el !== undefined);
 
   const tableData = [...usData, ...stateData];
+
   return { type: SET_MAIN_TABLE_DATA, payload: tableData };
 };
