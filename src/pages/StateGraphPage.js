@@ -4,8 +4,8 @@ import { fetchHistoricalData } from "../redux/actions/actionCreator";
 
 import "./USPage.css";
 import Title from "../components/Title";
-import LineChart from "../visualizations/LineChart";
-import functions from "../data-calculators";
+// import LineChart from "../visualizations/LineChart";
+import functions from "../utils";
 import Loader from "../components/Loader";
 
 const USPage = ({ stateId }) => {

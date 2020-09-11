@@ -1,7 +1,7 @@
 import React from "react";
 import TableHeader from "./TableHeader";
 
-const Table = ({ data, className }) => {
+const Table = ({ data, className, header }) => {
   const rowData = !data
     ? null
     : data.map((el) => {
@@ -21,7 +21,7 @@ const Table = ({ data, className }) => {
         <thead>
           <tr>
             <th colSpan="2" className="table-name">
-              Top Five {headers[1]}
+              {header}
             </th>
           </tr>
 

@@ -4,13 +4,21 @@ import {
   SET_MAIN_TABLE_DATA,
   SET_MAP_DATA,
   SET_TOP_FIVE_TABLE,
-  LOADING,
+  FETCH_STATE_DATA,
+  FETCH_SELECTED_STATE_CURRENT_DATA,
+  LOADING_TRUE,
+  LOADING_FALSE,
+  RESET_STATE,
 } from "./actionTypes";
 import axios from "axios";
-import functions from "../../data-calculators";
+import functions from "../../utils/index";
 
-export const setLoading = () => {
-  return { type: LOADING, payload: true };
+export const setLoadingTrue = () => {
+  return { type: LOADING_TRUE };
+};
+
+export const setLoadingFalse = () => {
+  return { type: LOADING_FALSE };
 };
 
 export const fetchCurrentData = () => async (dispatch) => {
@@ -27,6 +35,14 @@ export const fetchCurrentData = () => async (dispatch) => {
   dispatch({ type: FETCH_CURRENT_DATA, payload: payloadArray });
 };
 
+export const fetchSelectedStateCurrentData = (state) => async (dispatch) => {
+  const response = await axios.get(
+    `https://api.covidtracking.com/v1/states/${state}/current.json`
+  );
+
+  dispatch({ type: FETCH_SELECTED_STATE_CURRENT_DATA, payload: response.data });
+};
+
 export const fetchHistoricalData = (state) => async (dispatch) => {
   const stateLowerCase = state.toLowerCase();
 
@@ -37,7 +53,19 @@ export const fetchHistoricalData = (state) => async (dispatch) => {
           `https://api.covidtracking.com/api/v1/states/${stateLowerCase}/daily.json`
         );
 
-  dispatch({ type: FETCH_HISTORICAL_DATA, payload: response.data });
+  const RAFields = [
+    "positiveIncrease",
+    "deathIncrease",
+    "hospitalizedIncrease",
+  ];
+
+  const data = functions.calculateMovingAverageDataForge(
+    response.data,
+    7,
+    RAFields
+  );
+
+  dispatch({ type: FETCH_HISTORICAL_DATA, payload: data });
 };
 
 export const setMapData = (currentStateData, stateKey) => {
@@ -143,4 +171,28 @@ export const setMainTable = (currentUSData, currentStateData, stateKey) => {
   const tableData = [...usData, ...stateData];
 
   return { type: SET_MAIN_TABLE_DATA, payload: tableData };
+};
+
+export const fetchStateData = (state) => async (dispatch) => {
+  const [countyData, stateGeoData, stateMapData] = await Promise.all([
+    axios.get(`https://covid-us-state-data.herokuapp.com/api/v1/home/${state}`),
+    axios.get(
+      `https://covid-us-state-data.herokuapp.com/api/v1/home/us/county/geodata/${state}`
+    ),
+    axios.get(
+      `https://covid-us-state-data.herokuapp.com/api/v1/home/state/geodata/${state}`
+    ),
+  ]);
+
+  const payloadArray = [
+    { selectedStateGeoData: stateGeoData.data.data.query },
+    { selectedStateCountyCovidData: countyData.data.data.counties },
+    { selectedStateMapData: stateMapData.data.data.query },
+  ];
+
+  dispatch({ type: FETCH_STATE_DATA, payload: payloadArray });
+};
+
+export const resetState = () => {
+  return { type: RESET_STATE };
 };
