@@ -2,8 +2,11 @@
   "name": "animate-react",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://spur23.github.io/covid-data-client",
   "scripts": {
     "dev": "parcel ./public/index.html",
+    "predeploy": "pacel build",
+    "deploy": "gh-pages -d build",
     "build": "parcel build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -41,6 +44,7 @@
     "@babel/preset-react": "^7.10.4",
     "@emotion/babel-preset-css-prop": "^10.0.27",
     "babel-eslint": "^10.1.0",
+    "gh-pages": "^3.1.0",
     "parcel-bundler": "^1.12.4"
   },
   "browserslist": [
