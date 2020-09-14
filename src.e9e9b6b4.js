@@ -2545,4 +2545,4 @@ var e=arguments[3];Object.defineProperty(exports,"__esModule",{value:!0}),export
 },{"redux":"aVFJ","redux-thunk":"SaFO","../reducers":"wwkJ"}],"uBxZ":[function(require,module,exports) {
 "use strict";var e=a(require("react")),r=a(require("react-dom")),t=require("react-redux"),u=a(require("./App"));require("./index.css");var d=a(require("./redux/store/index"));function a(e){return e&&e.__esModule?e:{default:e}}r.default.render(e.default.createElement(t.Provider,{store:d.default},e.default.createElement(u.default,null)),document.getElementById("root"));
 },{"react":"n8MK","react-dom":"NKHc","react-redux":"jYIL","./App":"eBcb","./index.css":"tjdK","./redux/store/index":"esiz"}]},{},["uBxZ"], null)
-//# sourceMappingURL=https://spur23.github.io/covid-data-client/src.e9e9b6b4.js.map
+//# sourceMappingURL=src.e9e9b6b4.js.map
