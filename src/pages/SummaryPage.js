@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+import Table from "../components/Table";
+import Buttons from "../components/Buttons";
+import LineGraphs from "../components/LineGraphs";
+import PieChart from "../components/PieChart";
+import Map from "../components/Map";
+import KeyData from "../components/KeyData";
+import Loader from "../components/Loader";
+
 import {
   fetchCurrentData,
   setMapData,
   setTopFiveTables,
   fetchHistoricalData,
+  fetchCDCProvisionalData,
   setLoadingTrue,
   setLoadingFalse,
-  resetState,
 } from "../redux/actions/actionCreator";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowUp,
-  faArrowDown,
-  faEquals,
-} from "@fortawesome/free-solid-svg-icons";
-
 import functions from "../utils/index";
 
-import Table from "../components/Table";
-import Buttons from "../components/Buttons";
-import LineGraphs from "../components/LineGraphs";
-import Map from "../components/Map";
-
-import Loader from "../components/Loader";
 import "./SummaryPage.css";
 
-const SummaryPage = ({ navigate }) => {
+const SummaryPage = ({ navigate, basePath }) => {
   const dispatch = useDispatch();
   const currentStateData = useSelector((state) => state.currentStateData);
   const currentUSData = useSelector((state) => state.currentUSData);
@@ -34,18 +30,21 @@ const SummaryPage = ({ navigate }) => {
   const stateKey = useSelector((state) => state.stateKey);
   const mapData = useSelector((state) => state.mapData);
   const topFiveTableData = useSelector((state) => state.topFiveTableData);
+  const covidDemographicData = useSelector(
+    (state) => state.covidDemographicData
+  );
   const loading = useSelector((state) => state.loading);
   const [activeButton, setActiveButton] = useState("activeCases");
 
   useEffect(() => {
     dispatch(setLoadingTrue());
-    // dispatch(resetState());
     if (!currentStateData || !currentUSData) {
       dispatch(fetchCurrentData());
       dispatch(setLoadingFalse());
       return;
     }
     dispatch(fetchHistoricalData("United States"));
+    dispatch(fetchCDCProvisionalData("United States"));
     dispatch(setMapData(currentStateData, stateKey));
     dispatch(setTopFiveTables(currentStateData, stateKey));
     dispatch(setLoadingFalse());
@@ -53,7 +52,11 @@ const SummaryPage = ({ navigate }) => {
 
   const onStateClick = (e) => {
     dispatch(setLoadingTrue());
-    navigate(`/data/${e.target.id}`);
+    if (basePath === "") {
+      navigate(`/${e.target.id}`);
+    } else {
+      navigate(`/covid-data-client/${e.target.id}`);
+    }
   };
 
   const onButtonClick = (e) => {
@@ -69,69 +72,23 @@ const SummaryPage = ({ navigate }) => {
     </h6>
   );
 
-  const renderUSData =
-    !currentUSData || !historicalData ? null : (
-      <>
-        <div>
-          Active Cases:{" "}
-          {functions.numberWithCommas(
+  const currentData =
+    !currentUSData || !historicalData
+      ? null
+      : {
+          activeCases: functions.numberWithCommas(
             currentUSData[0].positive -
               currentUSData[0].recovered -
               currentUSData[0].death
-          )}
-        </div>
-        <div>
-          Recoveries: {functions.numberWithCommas(currentUSData[0].recovered)}
-        </div>
-        <div>Deaths: {functions.numberWithCommas(currentUSData[0].death)}</div>
-        <div>
-          In ICU: {functions.numberWithCommas(currentUSData[0].inIcuCurrently)}
-        </div>
-        <div>
-          Hospitalized:{" "}
-          {functions.numberWithCommas(currentUSData[0].hospitalizedCurrently)}
-        </div>
-        <div>
-          Total Cases: {functions.numberWithCommas(currentUSData[0].positive)}
-        </div>
-        <div>
-          Postive Cases 7 Day Trend:{" "}
-          {historicalData[0].positiveIncreaseRA7 >
-          historicalData[6].positiveIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowUp} style={{ color: "red" }} />
-          ) : historicalData[0].positiveIncreaseRA7 <
-            historicalData[6].positiveIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowDown} style={{ color: "green" }} />
-          ) : (
-            <FontAwesomeIcon icon={faEquals} style={{ color: "blue" }} />
-          )}
-        </div>
-        <div>
-          Deaths 7 Day Trend:{" "}
-          {historicalData[0].deathIncreaseRA7 >
-          historicalData[6].deathIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowUp} style={{ color: "red" }} />
-          ) : historicalData[0].deathIncreaseRA7 <
-            historicalData[6].deathIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowDown} style={{ color: "green" }} />
-          ) : (
-            <FontAwesomeIcon icon={faEquals} style={{ color: "blue" }} />
-          )}
-        </div>
-        <div>
-          Hospitalized Incr. 7 Day Trend:{" "}
-          {historicalData[0].hospitalizedIncreaseRA7 >
-          historicalData[6].hospitalizedIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowUp} style={{ color: "red" }} />
-          ) : historicalData[0].hospitalizedIncreaseRA7 <
-            historicalData[6].hospitalizedIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowDown} style={{ color: "green" }} />
-          ) : (
-            <FontAwesomeIcon icon={faEquals} style={{ color: "blue" }} />
-          )}
-        </div>
-      </>
-    );
+          ),
+          recoveries: functions.numberWithCommas(currentUSData[0].recovered),
+          deaths: functions.numberWithCommas(currentUSData[0].death),
+          inIcu: functions.numberWithCommas(currentUSData[0].inIcuCurrently),
+          hospitalized: functions.numberWithCommas(
+            currentUSData[0].hospitalizedCurrently
+          ),
+          totalCases: functions.numberWithCommas(currentUSData[0].positive),
+        };
 
   const buttonUSData = functions.createUSButtonArray(
     onButtonClick,
@@ -147,7 +104,25 @@ const SummaryPage = ({ navigate }) => {
           <div className="summary-main-container">
             <div className="data-container">
               <h4>Key Data</h4>
-              <div className="key-data-container">{renderUSData}</div>
+              <div className="key-data-container">
+                {!historicalData ? null : (
+                  <KeyData
+                    historicalData={historicalData}
+                    currentData={currentData}
+                  />
+                )}
+              </div>
+              <PieChart
+                data={covidDemographicData}
+                dropDownLabel="Gender"
+                dropDownSelection="sex"
+                dataInfo={{
+                  label: "age_group",
+                  id: "age_group",
+                  value: "covid_19_deaths",
+                }}
+                title="Deaths By Age Group"
+              />
             </div>
             <div className="map-container">
               <Buttons data={buttonUSData} />

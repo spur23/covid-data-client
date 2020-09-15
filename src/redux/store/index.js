@@ -5,7 +5,12 @@ import reducer from "../reducers";
 const devTools =
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
-const middleDevTools = compose(applyMiddleware(thunk), devTools);
+let middleDevTools;
+if (process.env.NODE_ENV === "development") {
+  middleDevTools = compose(applyMiddleware(thunk), devTools);
+} else {
+  middleDevTools = compose(applyMiddleware(thunk), devTools);
+}
 
 // const middleDevTools = compose(applyMiddleware(thunk));
 

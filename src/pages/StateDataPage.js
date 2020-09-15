@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+import Map from "../components/Map";
+import LineGraphs from "../components/LineGraphs";
+import PieChart from "../components/PieChart";
+import Loader from "../components/Loader";
+import Buttons from "../components/Buttons";
+import KeyData from "../components/KeyData";
+
+import "./StateDataPage.css";
+
 import {
   fetchStateData,
   fetchHistoricalData,
   fetchSelectedStateCurrentData,
+  fetchCDCProvisionalData,
   setLoadingFalse,
   setLoadingTrue,
 } from "../redux/actions/actionCreator";
-import "./StateDataPage.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowUp,
-  faArrowDown,
-  faEquals,
-} from "@fortawesome/free-solid-svg-icons";
-
 import functions from "../utils";
-
-import Map from "../components/Map";
-import LineGraphs from "../components/LineGraphs";
-import Loader from "../components/Loader";
-import Buttons from "../components/Buttons";
 
 const StateDataPage = ({ stateId }) => {
   const dispatch = useDispatch();
@@ -36,6 +34,9 @@ const StateDataPage = ({ stateId }) => {
   const selectedStateCurrentData = useSelector(
     (state) => state.selectedStateCurrentData
   );
+  const covidDemographicData = useSelector(
+    (state) => state.covidDemographicData
+  );
   const loading = useSelector((state) => state.loading);
 
   useEffect(() => {
@@ -43,90 +44,38 @@ const StateDataPage = ({ stateId }) => {
     dispatch(fetchStateData(state[0].state));
     dispatch(fetchHistoricalData(state[0].abbreviation));
     dispatch(fetchSelectedStateCurrentData(stateId));
+    dispatch(fetchCDCProvisionalData(state[0].state));
     dispatch(setLoadingFalse());
   }, []);
-
-  // if (!stateGeoData && !stateMapData && !stateCovidData) {
-  //   dispatch(setLoadingTrue());
-  // } else {
-  //   dispatch(setLoadingFalse());
-  // }
 
   const onButtonClick = (e) => {
     const btn = e.target.id;
     setActiveButton(btn);
   };
 
-  const renderUSData =
-    !historicalData || !selectedStateCurrentData ? null : (
-      <>
-        <div>
-          Active Cases:{" "}
-          {functions.numberWithCommas(
+  const currentData =
+    !historicalData || !selectedStateCurrentData
+      ? null
+      : {
+          activeCases: functions.numberWithCommas(
             selectedStateCurrentData.positive -
               selectedStateCurrentData.recovered -
               selectedStateCurrentData.death
-          )}
-        </div>
-        <div>
-          Recoveries:{" "}
-          {functions.numberWithCommas(selectedStateCurrentData.recovered)}
-        </div>
-        <div>
-          Deaths: {functions.numberWithCommas(selectedStateCurrentData.death)}
-        </div>
-        <div>
-          In ICU:{" "}
-          {functions.numberWithCommas(selectedStateCurrentData.inIcuCurrently)}
-        </div>
-        <div>
-          Hospitalized:{" "}
-          {functions.numberWithCommas(
+          ),
+          recoveries: functions.numberWithCommas(
+            selectedStateCurrentData.recovered
+          ),
+          deaths: functions.numberWithCommas(selectedStateCurrentData.death),
+          inIcu: functions.numberWithCommas(
+            selectedStateCurrentData.inIcuCurrently
+          ),
+          hospitalized: functions.numberWithCommas(
             selectedStateCurrentData.hospitalizedCurrently
-          )}
-        </div>
-        <div>
-          Total Cases:{" "}
-          {functions.numberWithCommas(selectedStateCurrentData.positive)}
-        </div>
-        <div>
-          Postive Cases 7 Day Trend:{" "}
-          {historicalData[0].positiveIncreaseRA7 >
-          historicalData[6].positiveIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowUp} style={{ color: "red" }} />
-          ) : historicalData[0].positiveIncreaseRA7 <
-            historicalData[6].positiveIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowDown} style={{ color: "green" }} />
-          ) : (
-            <FontAwesomeIcon icon={faEquals} style={{ color: "blue" }} />
-          )}
-        </div>
-        <div>
-          Deaths 7 Day Trend:{" "}
-          {historicalData[0].deathIncreaseRA7 >
-          historicalData[6].deathIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowUp} style={{ color: "red" }} />
-          ) : historicalData[0].deathIncreaseRA7 <
-            historicalData[6].deathIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowDown} style={{ color: "green" }} />
-          ) : (
-            <FontAwesomeIcon icon={faEquals} style={{ color: "blue" }} />
-          )}
-        </div>
-        <div>
-          Hospitalized Incr. 7 Day Trend:{" "}
-          {historicalData[0].hospitalizedIncreaseRA7 >
-          historicalData[6].hospitalizedIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowUp} style={{ color: "red" }} />
-          ) : historicalData[0].hospitalizedIncreaseRA7 <
-            historicalData[6].hospitalizedIncreaseRA7 ? (
-            <FontAwesomeIcon icon={faArrowDown} style={{ color: "green" }} />
-          ) : (
-            <FontAwesomeIcon icon={faEquals} style={{ color: "blue" }} />
-          )}
-        </div>
-      </>
-    );
+          ),
+          totalCases: functions.numberWithCommas(
+            selectedStateCurrentData.positive
+          ),
+        };
 
   const buttonStateData = [
     {
@@ -152,7 +101,25 @@ const StateDataPage = ({ stateId }) => {
           <div className="summary-main-container">
             <div className="data-container">
               <h4>Key Data</h4>
-              <div className="key-data-container">{renderUSData}</div>
+              <div className="key-data-container">
+                {!historicalData || !selectedStateCurrentData ? null : (
+                  <KeyData
+                    historicalData={historicalData}
+                    currentData={currentData}
+                  />
+                )}
+              </div>
+              <PieChart
+                data={covidDemographicData}
+                dropDownLabel="Gender"
+                dropDownSelection="sex"
+                dataInfo={{
+                  label: "age_group",
+                  id: "age_group",
+                  value: "covid_19_deaths",
+                }}
+                title="Deaths By Age Group"
+              />
             </div>
             <div className="map-container">
               <Buttons data={buttonStateData} />

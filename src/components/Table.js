@@ -13,6 +13,7 @@ const Table = ({ data, className, header }) => {
           </tr>
         );
       });
+
   const headers = !data ? null : Object.keys(data[0]).map((key) => key);
 
   return (

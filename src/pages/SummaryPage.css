@@ -1,19 +1,17 @@
 .summary-page-container,
-.data-container,
-.map-container {
+.data-container {
   display: flex;
   flex-direction: column;
   align-content: center;
   justify-content: center;
-  width: 90vw;
+  width: 100vw;
   margin-top: 5rem;
-  text-shadow: 0 1px 0 #fff;
 }
 
 .summary-main-container {
   display: flex;
   align-content: center;
-  justify-content: center;
+  justify-content: space-evenly;
   margin-bottom: 2rem;
   flex-direction: row;
 }
@@ -72,6 +70,7 @@
   order: 2;
   margin: 0;
   width: 50vw;
+  display: inline;
 }
 
 table {

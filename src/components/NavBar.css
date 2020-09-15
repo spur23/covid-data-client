@@ -22,6 +22,7 @@ a {
   box-shadow: 1px 1px 1px grey;
   width: 8vw;
   text-align: center;
+  margin-right: 1rem;
 }
 
 a:hover {

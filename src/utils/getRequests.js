@@ -28,6 +28,11 @@ const getUSDailyData = () =>
 const getStateDailyData = (state) =>
   axios.get(`https://api.covidtracking.com/api/v1/states/${state}/daily.json`);
 
+const getCDCProvisionalData = (state) =>
+  axios.get(`https://data.cdc.gov/resource/9bhg-hcku.json?state=${state}`, {
+    params: { $limit: 5000 },
+  });
+
 const getRequests = {
   getStateCountyData,
   getStateGeoData,
@@ -37,6 +42,7 @@ const getRequests = {
   getSelectedStateCurrentData,
   getUSDailyData,
   getStateDailyData,
+  getCDCProvisionalData,
 };
 
 export default getRequests;

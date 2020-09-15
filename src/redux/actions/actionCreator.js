@@ -9,8 +9,8 @@ import {
   LOADING_TRUE,
   LOADING_FALSE,
   RESET_STATE,
+  FETCH_CDC_PROVIDSIONAL_DATA,
 } from "./actionTypes";
-import axios from "axios";
 import functions from "../../utils/index";
 import getRequests from "../../utils/getRequests";
 
@@ -215,4 +215,22 @@ export const fetchStateData = (state) => async (dispatch) => {
 export const resetState = () => {
   // action to reset data when us map link is clicked
   return { type: RESET_STATE };
+};
+
+export const fetchCDCProvisionalData = (state) => async (dispatch) => {
+  try {
+    const { data } = await getRequests.getCDCProvisionalData(state);
+    const result = data.map((el) => {
+      return {
+        data_as_of: el.data_as_of,
+        state: el.state,
+        sex: el.sex,
+        age_group: el.age_group_new,
+        covid_19_deaths: el.covid_19_deaths,
+      };
+    });
+    dispatch({ type: FETCH_CDC_PROVIDSIONAL_DATA, payload: result });
+  } catch (error) {
+    console.error(error);
+  }
 };

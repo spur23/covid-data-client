@@ -2,14 +2,12 @@
   "name": "animate-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://spur23.github.io/covid-data-client",
+  "homepage": "https://spur23.github.io/covid-data-client/",
   "scripts": {
-    "dev": "parcel ./public/index.html",
-    "predeploy": "pacel build",
-    "deploy": "gh-pages -d build",
-    "build": "parcel build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "parcel public/index.html",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d dist",
+    "build": "parcel build public/index.html --public-url ./"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -25,6 +23,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/react-fontawesome": "^0.1.11",
     "@nivo/line": "^0.62.0",
+    "@nivo/pie": "^0.62.0",
     "@reach/router": "^1.3.4",
     "axios": "^0.20.0",
     "d3": "^6.1.1",

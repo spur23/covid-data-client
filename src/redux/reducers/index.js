@@ -32,6 +32,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedStateCurrentData: action.payload,
       };
+    case "FETCH_CDC_PROVIDSIONAL_DATA":
+      return {
+        ...state,
+        covidDemographicData: action.payload,
+      };
     case "SET_MAIN_TABLE_DATA":
       return { ...state, mainTable: action.payload };
     case "SET_MAP_DATA":
