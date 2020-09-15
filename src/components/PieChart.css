@@ -11,5 +11,6 @@
 }
 
 .chart-header h4 {
-  text-align: center;
+  text-align: left;
+  margin-top: 1rem;
 }

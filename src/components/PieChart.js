@@ -81,7 +81,7 @@ const PieChart = ({
         return {
           label: el[label],
           id: el[id],
-          value: parseInt(el[value]),
+          value: !el[value] ? 0 : parseInt(el[value]),
         };
       })
       .filter((el) => ageGroup.includes(el.label));

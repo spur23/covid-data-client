@@ -9,11 +9,8 @@ let middleDevTools;
 if (process.env.NODE_ENV === "development") {
   middleDevTools = compose(applyMiddleware(thunk), devTools);
 } else {
-  middleDevTools = compose(applyMiddleware(thunk), devTools);
+  middleDevTools = compose(applyMiddleware(thunk));
 }
-
-// const middleDevTools = compose(applyMiddleware(thunk));
-
 const store = createStore(reducer, middleDevTools);
 
 export default store;
