@@ -103,15 +103,12 @@ const SummaryPage = ({ navigate, basePath }) => {
         <>
           <div className="summary-main-container">
             <div className="data-container">
-              <h4>Key Data</h4>
-              <div className="key-data-container">
-                {!historicalData ? null : (
-                  <KeyData
-                    historicalData={historicalData}
-                    currentData={currentData}
-                  />
-                )}
-              </div>
+              {!historicalData ? null : (
+                <KeyData
+                  historicalData={historicalData}
+                  currentData={currentData}
+                />
+              )}
               <PieChart
                 data={covidDemographicData}
                 dropDownLabel="Gender"
@@ -133,20 +130,22 @@ const SummaryPage = ({ navigate, basePath }) => {
                 type="US"
               />
             </div>
-            <div className="table-container">
+            <div className="tables-container">
               <h4>Top Five States</h4>
-              <Table
-                className="positive-table"
-                data={topFiveTableData.fivePositive}
-                header="Top Five Total Cases"
-                onClick={onStateClick}
-              />
-              <Table
-                className="death-table"
-                data={topFiveTableData.fiveDeaths}
-                header="Top Five Total Deaths"
-                onClick={onStateClick}
-              />
+              <div className="table-container">
+                <Table
+                  className="positive-table"
+                  data={topFiveTableData.fivePositive}
+                  header="Top Five Total Cases"
+                  onClick={onStateClick}
+                />
+                <Table
+                  className="death-table"
+                  data={topFiveTableData.fiveDeaths}
+                  header="Top Five Total Deaths"
+                  onClick={onStateClick}
+                />
+              </div>
             </div>
           </div>
           <LineGraphs data={historicalData} />

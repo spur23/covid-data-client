@@ -97,13 +97,13 @@ const PieChart = ({
     <div className="piechart-container">
       <div className="chart-header">
         <h4>{title}</h4>
+        <Dropdown
+          value={selection}
+          onChange={onChange}
+          categories={categories}
+          dropDownLabel={dropDownLabel}
+        />
       </div>
-      <Dropdown
-        value={selection}
-        onChange={onChange}
-        categories={categories}
-        dropDownLabel={dropDownLabel}
-      />
       <NivoPieChart data={graphData} />
     </div>
   );

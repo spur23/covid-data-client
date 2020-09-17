@@ -100,7 +100,6 @@ const StateDataPage = ({ stateId }) => {
         <>
           <div className="summary-main-container">
             <div className="data-container">
-              <h4>Key Data</h4>
               <div className="key-data-container">
                 {!historicalData || !selectedStateCurrentData ? null : (
                   <KeyData

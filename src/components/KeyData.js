@@ -8,7 +8,8 @@ import {
 
 const KeyData = ({ historicalData, currentData }) => {
   return (
-    <>
+    <div className="key-data-container">
+      <h4>Key Data</h4>
       <div>Active Cases: {currentData.activeCases}</div>
       <div>Recoveries: {currentData.recoveries}</div>
       <div>Deaths: {currentData.deaths}</div>
@@ -51,7 +52,7 @@ const KeyData = ({ historicalData, currentData }) => {
           <FontAwesomeIcon icon={faEquals} style={{ color: "blue" }} />
         )}
       </div>
-    </>
+    </div>
   );
 };
 
