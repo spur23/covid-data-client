@@ -1,33 +1,38 @@
 import React from "react";
 import TableHeader from "./TableHeader";
 
-const Table = ({ data, className, header }) => {
-  const rowData = !data
-    ? null
-    : data.map((el) => {
-        return (
-          <tr key={el.state} id={el.state}>
-            {Object.keys(el).map((key) => {
-              return <td key={`${el.state}-${key}`}>{el[key]}</td>;
-            })}
-          </tr>
-        );
-      });
+import functions from "../utils/index";
 
-  const headers = !data ? null : Object.keys(data[0]).map((key) => key);
+const Table = ({ data, className, columns, columnHeaders }) => {
+  const cleanedData = data.map((el) => {
+    const arr = [];
+    columns.forEach((heading) => {
+      if (typeof el[heading] === "number") {
+        const numberFormatted = functions.convertNumberLocal(el[heading]);
+        arr.push(numberFormatted);
+      } else {
+        arr.push(el[heading]);
+      }
+    });
+    return arr;
+  });
+
+  const rowData = !cleanedData
+    ? null
+    : cleanedData.map((el) => (
+        <tr key={el[0]}>
+          {Object.keys(el).map((key) => {
+            return <td key={`${el[0]}-${key}`}>{el[key]}</td>;
+          })}
+        </tr>
+      ));
 
   return (
     <>
       <table className={className}>
         <thead>
           <tr>
-            <th colSpan="2" className="table-name">
-              {header}
-            </th>
-          </tr>
-
-          <tr>
-            <TableHeader headers={headers} />
+            <TableHeader headers={columnHeaders} />
           </tr>
         </thead>
         <tbody>{rowData}</tbody>

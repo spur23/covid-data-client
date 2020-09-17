@@ -57,22 +57,22 @@ const StateDataPage = ({ stateId }) => {
     !historicalData || !selectedStateCurrentData
       ? null
       : {
-          activeCases: functions.numberWithCommas(
+          activeCases: functions.convertNumberLocal(
             selectedStateCurrentData.positive -
               selectedStateCurrentData.recovered -
               selectedStateCurrentData.death
           ),
-          recoveries: functions.numberWithCommas(
+          recoveries: functions.convertNumberLocal(
             selectedStateCurrentData.recovered
           ),
-          deaths: functions.numberWithCommas(selectedStateCurrentData.death),
-          inIcu: functions.numberWithCommas(
+          deaths: functions.convertNumberLocal(selectedStateCurrentData.death),
+          inIcu: functions.convertNumberLocal(
             selectedStateCurrentData.inIcuCurrently
           ),
-          hospitalized: functions.numberWithCommas(
+          hospitalized: functions.convertNumberLocal(
             selectedStateCurrentData.hospitalizedCurrently
           ),
-          totalCases: functions.numberWithCommas(
+          totalCases: functions.convertNumberLocal(
             selectedStateCurrentData.positive
           ),
         };

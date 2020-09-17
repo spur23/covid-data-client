@@ -17,6 +17,7 @@ import {
 } from "d3";
 import { legendColor } from "d3-svg-legend";
 import { USData } from "./USGEOJSON";
+import functions from "../utils/index";
 import "./GeoChart.css";
 
 const f = format(",.0f");
@@ -95,20 +96,7 @@ const GeoChartUS = ({ data, selection, onClick }) => {
 
     const stateData = data.filter((el) => el.state === e.target.id);
 
-    const text =
-      selection === "activeCases"
-        ? `Active Cases`
-        : selection === "recoveries"
-        ? `Recoveries`
-        : selection === "deaths"
-        ? `Deaths`
-        : selection === "totalCases"
-        ? `Total Cases`
-        : selection === "inICU"
-        ? "In ICU"
-        : selection === "hospitalized"
-        ? "Hospitalized"
-        : null;
+    const text = functions.buttonTextMap(selection);
 
     const toolTipStyle = {
       opacity: 1,

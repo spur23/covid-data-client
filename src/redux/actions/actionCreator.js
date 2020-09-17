@@ -29,8 +29,22 @@ export const fetchCurrentData = () => async (dispatch) => {
       getRequests.getCurrentUSData(),
     ]);
 
+    const currentStateData = stateCurrent.data.map((el) => {
+      return {
+        state: el.state,
+        activeCases:
+          el.recovered === null ? el.positive : el.positive - el.recovered,
+        recoveries: el.recovered === null ? 0 : el.recovered,
+        totalCases: el.positive === null ? 0 : el.positive,
+        deaths: el.death === null ? 0 : el.death,
+        hospitalized:
+          el.hospitalizedCurrently === null ? 0 : el.hospitalizedCurrently,
+        inICU: el.inIcuCurrently === null ? 0 : el.inIcuCurrently,
+      };
+    });
+
     const payloadArray = [
-      { currentStateData: stateCurrent.data },
+      { currentStateData },
       { currentUSData: usCurrent.data },
     ];
 
@@ -93,16 +107,8 @@ export const setMapData = (currentStateData, stateKey) => {
       // creates the individual state object for the map
       if (state.length > 0) {
         return {
-          state: el.state,
+          ...el,
           stateName: state[0].state,
-          activeCases:
-            el.recovered === null ? el.positive : el.positive - el.recovered,
-          recoveries: el.recovered === null ? 0 : el.recovered,
-          totalCases: el.positive === null ? 0 : el.positive,
-          deaths: el.death === null ? 0 : el.death,
-          hospitalized:
-            el.hospitalizedCurrently === null ? 0 : el.hospitalizedCurrently,
-          inICU: el.inIcuCurrently === null ? 0 : el.inIcuCurrently,
         };
       } else {
         return undefined;
@@ -113,44 +119,44 @@ export const setMapData = (currentStateData, stateKey) => {
   return { type: SET_MAP_DATA, payload: map };
 };
 
-export const setTopFiveTables = (currentStateData, stateKey) => {
-  // creates the top five table data
-  const fivePositive = currentStateData
-    .sort((a, b) => b.positive - a.positive)
-    .slice(0, 5)
-    .map((el) => {
-      const st = stateKey.filter((abv) => abv.abbreviation === el.state);
-      return {
-        state: st[0].state,
-        positive: functions.numberWithCommas(el.positive),
-      };
-    });
+// export const setTopFiveTables = (currentStateData, stateKey) => {
+//   // creates the top five table data
+//   const fivePositive = currentStateData
+//     .sort((a, b) => b.positive - a.positive)
+//     .slice(0, 5)
+//     .map((el) => {
+//       const st = stateKey.filter((abv) => abv.abbreviation === el.state);
+//       return {
+//         state: st[0].state,
+//         positive: functions.convertNumberLocal(el.positive),
+//       };
+//     });
 
-  const fiveDeaths = currentStateData
-    .sort((a, b) => b.death - a.death)
-    .slice(0, 5)
-    .map((el) => {
-      const st = stateKey.filter((abv) => abv.abbreviation === el.state);
-      return {
-        state: st[0].state,
-        deaths: functions.numberWithCommas(el.death),
-      };
-    });
+//   const fiveDeaths = currentStateData
+//     .sort((a, b) => b.death - a.death)
+//     .slice(0, 5)
+//     .map((el) => {
+//       const st = stateKey.filter((abv) => abv.abbreviation === el.state);
+//       return {
+//         state: st[0].state,
+//         deaths: functions.convertNumberLocal(el.death),
+//       };
+//     });
 
-  return { type: SET_TOP_FIVE_TABLE, payload: { fivePositive, fiveDeaths } };
-};
+//   return { type: SET_TOP_FIVE_TABLE, payload: { fivePositive, fiveDeaths } };
+// };
 
 // export const setMainTable = (currentUSData, currentStateData, stateKey) => {
 //   const usData = [
 //     {
 //       state: "United States",
 //       stateName: "United States",
-//       activeCases: functions.numberWithCommas(
+//       activeCases: functions.convertNumberLocal(
 //         currentUSData[0].positive - currentUSData[0].recovered
 //       ),
-//       recoveries: functions.numberWithCommas(currentUSData[0].recovered),
-//       totalCases: functions.numberWithCommas(currentUSData[0].positive),
-//       deaths: functions.numberWithCommas(currentUSData[0].death),
+//       recoveries: functions.convertNumberLocal(currentUSData[0].recovered),
+//       totalCases: functions.convertNumberLocal(currentUSData[0].positive),
+//       deaths: functions.convertNumberLocal(currentUSData[0].death),
 //     },
 //   ];
 
@@ -165,20 +171,20 @@ export const setTopFiveTables = (currentStateData, stateKey) => {
 //           stateName: state[0].state,
 //           activeCases:
 //             el.recovered === null
-//               ? functions.numberWithCommas(el.positive)
-//               : functions.numberWithCommas(el.positive - el.recovered),
+//               ? functions.convertNumberLocal(el.positive)
+//               : functions.convertNumberLocal(el.positive - el.recovered),
 //           recoveries:
 //             el.recovered === null
 //               ? "Not Reported"
-//               : functions.numberWithCommas(el.recovered),
+//               : functions.convertNumberLocal(el.recovered),
 //           totalCases:
 //             el.positive === null
 //               ? "Not Reported"
-//               : functions.numberWithCommas(el.positive),
+//               : functions.convertNumberLocal(el.positive),
 //           deaths:
 //             el.death === null
 //               ? "Not Reported"
-//               : functions.numberWithCommas(el.death),
+//               : functions.convertNumberLocal(el.death),
 //         };
 //       } else {
 //         return undefined;

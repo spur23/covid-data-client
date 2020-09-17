@@ -142,6 +142,27 @@ const createUSButtonArray = (onClick, activeButton) => {
   ];
 };
 
+const buttonTextMap = (selection) => {
+  if (selection === "activeCases") {
+    return `Active Cases`;
+  } else if (selection === "recoveries") {
+    return `Recoveries`;
+  } else if (selection === "deaths") {
+    return `Deaths`;
+  } else if (selection === "totalCases") {
+    return `Total Cases`;
+  } else if (selection === "inICU") {
+    return "In ICU";
+  } else if (selection === "hospitalized") {
+    return "Hospitalized";
+  } else {
+    return null;
+  }
+};
+
+const convertNumberLocal = (value) =>
+  Number(value).toLocaleString("en-Us", { minimumFractionDigits: 0 });
+
 const functions = {
   calculateMovingAverage,
   calculateMovingAverageDataForge,
@@ -149,6 +170,8 @@ const functions = {
   numberWithCommas,
   replaceCharacterRegex,
   createUSButtonArray,
+  buttonTextMap,
+  convertNumberLocal,
 };
 
 export default functions;

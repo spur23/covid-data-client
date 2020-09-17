@@ -29,7 +29,7 @@ const SummaryPage = ({ navigate, basePath }) => {
   const historicalData = useSelector((state) => state.historicalData);
   const stateKey = useSelector((state) => state.stateKey);
   const mapData = useSelector((state) => state.mapData);
-  const topFiveTableData = useSelector((state) => state.topFiveTableData);
+  // const topFiveTableData = useSelector((state) => state.topFiveTableData);
   const covidDemographicData = useSelector(
     (state) => state.covidDemographicData
   );
@@ -46,7 +46,7 @@ const SummaryPage = ({ navigate, basePath }) => {
     dispatch(fetchHistoricalData("United States"));
     dispatch(fetchCDCProvisionalData("United States"));
     dispatch(setMapData(currentStateData, stateKey));
-    dispatch(setTopFiveTables(currentStateData, stateKey));
+    // dispatch(setTopFiveTables(currentStateData, stateKey));
     dispatch(setLoadingFalse());
   }, [currentStateData, currentUSData, dispatch, stateKey]);
 
@@ -76,18 +76,18 @@ const SummaryPage = ({ navigate, basePath }) => {
     !currentUSData || !historicalData
       ? null
       : {
-          activeCases: functions.numberWithCommas(
+          activeCases: functions.convertNumberLocal(
             currentUSData[0].positive -
               currentUSData[0].recovered -
               currentUSData[0].death
           ),
-          recoveries: functions.numberWithCommas(currentUSData[0].recovered),
-          deaths: functions.numberWithCommas(currentUSData[0].death),
-          inIcu: functions.numberWithCommas(currentUSData[0].inIcuCurrently),
-          hospitalized: functions.numberWithCommas(
+          recoveries: functions.convertNumberLocal(currentUSData[0].recovered),
+          deaths: functions.convertNumberLocal(currentUSData[0].death),
+          inIcu: functions.convertNumberLocal(currentUSData[0].inIcuCurrently),
+          hospitalized: functions.convertNumberLocal(
             currentUSData[0].hospitalizedCurrently
           ),
-          totalCases: functions.numberWithCommas(currentUSData[0].positive),
+          totalCases: functions.convertNumberLocal(currentUSData[0].positive),
         };
 
   const buttonUSData = functions.createUSButtonArray(
@@ -95,9 +95,11 @@ const SummaryPage = ({ navigate, basePath }) => {
     activeButton
   );
 
+  const selection = functions.buttonTextMap(activeButton);
+
   return (
     <div className="summary-page-container">
-      {!topFiveTableData || !mapData ? (
+      {!mapData ? (
         <Loader />
       ) : (
         <>
@@ -134,6 +136,12 @@ const SummaryPage = ({ navigate, basePath }) => {
               <h4>Top Five States</h4>
               <div className="table-container">
                 <Table
+                  className="data-table"
+                  data={mapData}
+                  columns={["stateName", activeButton]}
+                  columnHeaders={["State", selection]}
+                />
+                {/* <Table
                   className="positive-table"
                   data={topFiveTableData.fivePositive}
                   header="Top Five Total Cases"
@@ -144,7 +152,7 @@ const SummaryPage = ({ navigate, basePath }) => {
                   data={topFiveTableData.fiveDeaths}
                   header="Top Five Total Deaths"
                   onClick={onStateClick}
-                />
+                /> */}
               </div>
             </div>
           </div>
