@@ -15,6 +15,7 @@
   margin-bottom: 2rem;
   flex-direction: row;
 }
+
 .data-container {
   margin: 0;
   margin-bottom: 1rem;
@@ -62,14 +63,15 @@
   display: flex;
   flex-direction: column;
   align-content: center;
-  /* padding: 1rem; */
-  height: max-content;
+  overflow-y: auto;
+  overflow-x: clip;
+  height: 50vh;
+  width: 16rem;
 }
 
 .map-container {
   order: 2;
   margin: 0;
-  width: 50%;
   display: inline;
 }
 
@@ -80,12 +82,6 @@
   margin-bottom: 1rem;
 }
 
-.table-container {
-  overflow-y: auto;
-  overflow-x: clip;
-  height: 50vh;
-  width: 16rem;
-}
 .table-container th {
   position: sticky;
   top: 0;
