@@ -133,26 +133,15 @@ const SummaryPage = ({ navigate, basePath }) => {
               />
             </div>
             <div className="tables-container">
-              <h4>Top Five States</h4>
+              <h4>{selection} by State</h4>
               <div className="table-container">
                 <Table
                   className="data-table"
                   data={mapData}
                   columns={["stateName", activeButton]}
                   columnHeaders={["State", selection]}
+                  percent={[true, activeButton]}
                 />
-                {/* <Table
-                  className="positive-table"
-                  data={topFiveTableData.fivePositive}
-                  header="Top Five Total Cases"
-                  onClick={onStateClick}
-                />
-                <Table
-                  className="death-table"
-                  data={topFiveTableData.fiveDeaths}
-                  header="Top Five Total Deaths"
-                  onClick={onStateClick}
-                /> */}
               </div>
             </div>
           </div>

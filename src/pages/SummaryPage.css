@@ -15,7 +15,6 @@
   margin-bottom: 2rem;
   flex-direction: row;
 }
-
 .data-container {
   margin: 0;
   margin-bottom: 1rem;
@@ -66,12 +65,13 @@
   overflow-y: auto;
   overflow-x: clip;
   height: 50vh;
-  width: 16rem;
+  width: 18rem;
 }
 
 .map-container {
   order: 2;
   margin: 0;
+  width: 50%;
   display: inline;
 }
 

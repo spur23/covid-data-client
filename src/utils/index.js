@@ -160,8 +160,8 @@ const buttonTextMap = (selection) => {
   }
 };
 
-const convertNumberLocal = (value) =>
-  Number(value).toLocaleString("en-Us", { minimumFractionDigits: 0 });
+const convertNumberLocal = (value, digits = 0) =>
+  Number(value).toLocaleString("en-Us", { minimumFractionDigits: digits });
 
 const functions = {
   calculateMovingAverage,
