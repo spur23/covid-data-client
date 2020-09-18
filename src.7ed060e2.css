@@ -26,6 +26,56 @@ li {
   justify-content: center;
 }
 
+.header-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.sort-icons {
+  margin-left: 0.5rem;
+  align-content: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon {
+  margin-bottom: 0.025rem;
+  padding: 0.1rem;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+.sort-arrow:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.sort-arrow {
+  background-color: transparent;
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 0.5rem solid transparent;
+  border-right: 0.5rem solid transparent;
+
+  border-bottom: 0.5rem solid black;
+  margin-bottom: 0.25rem;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 0.5rem solid transparent;
+  border-right: 0.5rem solid transparent;
+
+  border-top: 0.5rem solid black;
+}
+
 .piechart-container {
   display: flex;
   flex-direction: column;
@@ -193,7 +243,7 @@ svg {
   overflow-y: auto;
   overflow-x: clip;
   height: 50vh;
-  width: 18rem;
+  width: 20rem;
 }
 
 .map-container {
