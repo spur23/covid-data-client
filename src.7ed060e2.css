@@ -137,6 +137,17 @@ button.active {
   margin-top: 1rem;
 }
 
+.chart-container {
+  display: flex;
+  align-content: left;
+  justify-content: left;
+}
+
+.piechart-container .chart-container {
+  height: 25vh;
+  width: 15vw;
+}
+
 svg .state:hover {
   stroke: black;
   stroke-width: 2px;
