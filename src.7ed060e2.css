@@ -326,6 +326,10 @@ svg {
   text-transform: capitalize;
 }
 
+.map-container h4 {
+  margin-bottom: 1rem;
+}
+
 table {
   background: #dfe6e9;
   border-collapse: collapse;
